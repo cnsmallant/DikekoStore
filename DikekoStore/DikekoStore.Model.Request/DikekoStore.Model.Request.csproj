@@ -6,7 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Client\" />
-    <Folder Include="Platform\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DikekoStore.Model.Common\DikekoStore.Model.Common.csproj" />
   </ItemGroup>
 
 </Project>

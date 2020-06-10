@@ -4,4 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DikekoStore.Common\DikekoStore.Common.csproj" />
+    <ProjectReference Include="..\DikekoStore.Model.Common\DikekoStore.Model.Common.csproj" />
+    <ProjectReference Include="..\DikekoStore.Model.Request\DikekoStore.Model.Request.csproj" />
+    <ProjectReference Include="..\DikekoStore.Model.Response\DikekoStore.Model.Response.csproj" />
+    <ProjectReference Include="..\DikekoStore.Platform.Service\DikekoStore.Platform.Service.csproj" />
+  </ItemGroup>
+
 </Project>

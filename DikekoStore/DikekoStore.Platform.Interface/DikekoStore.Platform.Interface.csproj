@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DikekoStore.Dao\DikekoStore.Dao.csproj" />
+    <ProjectReference Include="..\DikekoStore.Model.Common\DikekoStore.Model.Common.csproj" />
+    <ProjectReference Include="..\DikekoStore.Model.Request\DikekoStore.Model.Request.csproj" />
+  </ItemGroup>
+
 </Project>
