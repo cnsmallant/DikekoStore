@@ -5,6 +5,7 @@ using DikekoStore.Model.Request.Platform;
 using DikekoStore.Platform.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 using static DikekoStore.Common.Enumerate;
 
@@ -36,18 +37,33 @@ namespace DikekoStore.Platform.Service
                                                    EditTime
                                                )
                                                VALUES
-                                               (   N'{manager.Id}',  -- Id - nvarchar(50)
-                                                   N'{manager.Account}',  -- Account - nvarchar(50)
-                                                   N'{manager.Password}',  -- Password - nvarchar(max)
-                                                   N'{manager.PhoneNumber}',  -- PhoneNumber - nvarchar(50)
-                                                   1, -- IsUsed - bit
-                                                   0, -- IsDelete - bit
-                                                   N'{manager.CreateUserId}',  -- CreateUserId - nvarchar(50)
-                                                   '{manager.CreateTime}',    -- CreateTime - bigint
-                                                   N'{manager.EditUserId}',  -- EditUserId - nvarchar(50)
-                                                   '{manager.EditTime}'     -- EditTime - bigint
+                                               (   
+                                                   @Id,
+                                                   @Account,
+                                                   @Password,
+                                                   @PhoneNumber,
+                                                   @IsUsed,
+                                                   @IsDelete,
+                                                   @CreateUserId,
+                                                   @CreateTime,
+                                                   @EditUserId,
+                                                   @EditTime
                                                    )";
-            return db.Insert(sql);
+            SqlParameter[] para =
+            {
+                new SqlParameter("@Id",manager.Id),
+                new SqlParameter("@Account",manager.Account),
+                new SqlParameter("@Password",manager.Password),
+                new SqlParameter("@PhoneNumber",manager.PhoneNumber),
+                new SqlParameter("@IsUsed",manager.IsUsed),
+                new SqlParameter("@IsDelete",manager.IsDelete),
+                new SqlParameter("@CreateUserId",manager.CreateUserId),
+                new SqlParameter("@CreateTime",manager.CreateTime),
+                new SqlParameter("@EditUserId",manager.EditUserId),
+                new SqlParameter("@EditTime",manager.EditTime)
+
+            };
+            return db.Insert(sql, para);
         }
 
         /// <summary>
@@ -57,8 +73,12 @@ namespace DikekoStore.Platform.Service
         /// <returns></returns>
         public int Delete(PrimaryKey primaryKey)
         {
-            var sql = $"UPDATE Manager SET IsDelete=1 WHERE Id='{primaryKey}'";
-            return db.Update(sql);
+            var sql = $"UPDATE Manager SET IsDelete=1 WHERE Id=@Id";
+            SqlParameter[] para =
+            {
+                new SqlParameter("@Id",primaryKey)
+            };
+            return db.Update(sql, para);
         }
 
         /// <summary>
@@ -69,15 +89,24 @@ namespace DikekoStore.Platform.Service
         public int Edit(Manager manager)
         {
             var sql = @$"UPDATE Manager SET
-                                  Account='{manager.Account}'
-                                 ,Password='{manager.Password}'
-                                 ,PhoneNumber='{manager.PhoneNumber}'
-                                 ,IsUsed='{manager.IsUsed}'
-                                 ,IsDelete='{manager.IsDelete}'
-                                 ,EditUserId='{manager.EditUserId}'
-                                 ,EditTime='{manager.EditTime}'
-                                 WHERE Id='{manager.Id}'";
-            return db.Update(sql);
+                                  Account=@Account
+                                 ,Password=@Password
+                                 ,PhoneNumber=@PhoneNumber
+                                 ,EditUserId=@EditUserId
+                                 ,EditTime=@EditTime
+                                 WHERE Id=@Id
+                                                          ";
+            SqlParameter[] para =
+            {
+                new SqlParameter("@Id",manager.Id),
+                new SqlParameter("@Account",manager.Account),
+                new SqlParameter("@Password",manager.Password),
+                new SqlParameter("@PhoneNumber",manager.PhoneNumber),
+                new SqlParameter("@EditUserId",manager.EditUserId),
+                new SqlParameter("@EditTime",manager.EditTime)
+            };
+
+            return db.Update(sql, para);
         }
 
         /// <summary>
@@ -88,6 +117,7 @@ namespace DikekoStore.Platform.Service
         public Manager GetManager(ManagerLogin managerLogin)
         {
             StringBuilder sb = new StringBuilder();
+            object[] para;
             sb.Append($@"SELECT Id,
                                                     Account,
                                                     Password,
@@ -100,14 +130,24 @@ namespace DikekoStore.Platform.Service
                                                     EditTime	FROM Manager ");
             if (RegExpTools.regPhone.IsMatch(managerLogin.Account))
             {
-                sb.Append($"WHERE PhoneNumber='{managerLogin.Account}' AND Password='{managerLogin.Password}'");
+                sb.Append($"WHERE PhoneNumber=@PhoneNumber  AND Password=@Password");
+                para = new SqlParameter[]
+               {
+                  new   SqlParameter("@PhoneNumber", managerLogin.Account),
+                  new   SqlParameter("@Password", managerLogin.Password),
+               };
             }
             else
             {
-                sb.Append($"WHERE Account='{managerLogin.Account}' AND Password='{managerLogin.Password}'");
+                sb.Append($"WHERE Account=@Account  AND Password=@Password");
+                para = new SqlParameter[]
+              {
+                    new SqlParameter("@Password", managerLogin.Password),
+                    new SqlParameter("@Account", managerLogin.Account),
+               };
             }
 
-            return db.SingleOrDefault<Manager>(sb.ToString());
+            return db.SingleOrDefault<Manager>(sb.ToString(), para);
         }
 
         /// <summary>
@@ -126,8 +166,12 @@ namespace DikekoStore.Platform.Service
                                                     CreateUserId,
                                                     CreateTime,
                                                     EditUserId,
-                                                    EditTime	FROM Manager WHERE Id='{primaryKey}'";
-            return db.SingleOrDefault<Manager>(sql);
+                                                    EditTime	FROM Manager WHERE Id=@Id";
+            SqlParameter[] para =
+            {
+                new SqlParameter("@Id",primaryKey)
+            };
+            return db.SingleOrDefault<Manager>(sql, para);
 
         }
 
@@ -138,6 +182,7 @@ namespace DikekoStore.Platform.Service
         /// <returns></returns>
         public dynamic GetManagerByPage(ManagerPage page)
         {
+            object[] para=null;
             StringBuilder sb = new StringBuilder();
             sb.Append($@"SELECT Id,
                                                     Account,
@@ -151,14 +196,22 @@ namespace DikekoStore.Platform.Service
                                                     EditTime	FROM Manager  WHERE 1=1");
             if (!string.IsNullOrEmpty(page.Account))
             {
-                sb.Append($" AND Account LIKE '%{page.Account}%'");
+                sb.Append($" AND Account LIKE @Account");
+                para = new SqlParameter[]
+                {
+                    new SqlParameter("@Account",$"'%{page.Account}%'")
+                };
             }
             if (!string.IsNullOrEmpty(page.PhoneNumber))
             {
-                sb.Append($" AND PhoneNumber='{page.PhoneNumber}'");
+                sb.Append($" AND PhoneNumber=@PhoneNumber");
+                para = new SqlParameter[]
+                {
+                    new SqlParameter("@PhoneNumber",page.PhoneNumber)
+                };
             }
             sb.Append($" ORDER BY Id {page.Sort}");
-            return db.PageOrDefault<Manager>(page.CurrentPage, page.PageSize, sb.ToString());
+            return db.PageOrDefault<Manager>(page.CurrentPage, page.PageSize, sb.ToString(), 1, para);
         }
     }
 }
