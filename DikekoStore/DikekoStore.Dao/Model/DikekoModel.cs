@@ -841,6 +841,51 @@ public  string  EditUserId{ get; set; }
 [Column("EditTime")]
 public  long  EditTime{ get; set; }
 }
+[TableName("UserSearch")]
+public class UserSearch
+{
+/// <summary>
+///主键
+ /// </summary>
+[Column("Id")]
+[PrimaryKey("Id",false)]
+public  string  Id{ get; set; }
+/// <summary>
+///关键字（json格式）
+ /// </summary>
+[Column("Keyword")]
+public  string  Keyword{ get; set; }
+/// <summary>
+///是否启用
+ /// </summary>
+[Column("IsUsed")]
+public  bool  IsUsed{ get; set; }
+/// <summary>
+///是否删除
+ /// </summary>
+[Column("IsDelete")]
+public  bool  IsDelete{ get; set; }
+/// <summary>
+///创建人
+ /// </summary>
+[Column("CreateUserId")]
+public  string  CreateUserId{ get; set; }
+/// <summary>
+///创建时间（时间戳）
+ /// </summary>
+[Column("CreateTime")]
+public  long  CreateTime{ get; set; }
+/// <summary>
+///修改人
+ /// </summary>
+[Column("EditUserId")]
+public  string  EditUserId{ get; set; }
+/// <summary>
+///修改时间（时间戳）
+ /// </summary>
+[Column("EditTime")]
+public  long  EditTime{ get; set; }
+}
 [TableName("UserCertification")]
 public class UserCertification
 {
