@@ -1,4 +1,5 @@
-﻿using DikekoStore.Model.Request.Platform;
+﻿using DikekoStore.Model.Common;
+using DikekoStore.Model.Request.Platform;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,6 +20,19 @@ namespace DikekoStore.Platform.Interface
         /// <returns></returns>
         int Edit(GoodsProperty goodsProperty);
 
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="primaryKey"></param>
+        /// <returns></returns>
+        int Delete(PrimaryKey primaryKey);
+
+        /// <summary>
+        /// 删除属性值
+        /// </summary>
+        /// <param name="primaryKey"></param>
+        /// <returns></returns>
+        int DeleteVal(PrimaryKey primaryKey);
 
     }
 }
