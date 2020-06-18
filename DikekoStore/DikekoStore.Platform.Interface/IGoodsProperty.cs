@@ -1,4 +1,5 @@
-﻿using DikekoStore.Model.Common;
+﻿using Dikeko.ORM.Core.Model;
+using DikekoStore.Model.Common;
 using DikekoStore.Model.Request.Platform;
 using System;
 using System.Collections.Generic;
@@ -34,5 +35,17 @@ namespace DikekoStore.Platform.Interface
         /// <returns></returns>
         int DeleteVal(PrimaryKey primaryKey);
 
+        /// <summary>
+        /// 按照CategoryId读取
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        IList<GoodsPropertyKey> GetByCategoryId(string categoryId);
+        /// <summary>
+        /// 按照PropertyKeyId读取
+        /// </summary>
+        /// <param name="propertyKeyId"></param>
+        /// <returns></returns>
+        IList<Dikeko.ORM.Core.Model.GoodsPropertyVal> GetByPropertyKeyId(string propertyKeyId);
     }
 }

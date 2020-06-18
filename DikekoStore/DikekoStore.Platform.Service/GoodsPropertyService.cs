@@ -1,4 +1,5 @@
-﻿using DikekoStore.Common;
+﻿using Dikeko.ORM.Core.Model;
+using DikekoStore.Common;
 using DikekoStore.Model.Common;
 using DikekoStore.Model.Request.Platform;
 using DikekoStore.Platform.Interface;
@@ -20,7 +21,7 @@ namespace DikekoStore.Platform.Service
         {
             StringBuilder sb = new StringBuilder();
             var PropertyKeyId = Common.GenerateTools.PrimaryKey();
-            sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsPropertyKey WHERE Name='{goodsProperty.Name}' AND IsDelete=0)");
+            sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsPropertyKey WHERE Name='{goodsProperty.Name}' AND CategoryId='{goodsProperty.CategoryId}' AND IsDelete=0)");
             sb.Append("BEGIN");
             sb.Append($@"INSERT dbo.GoodsPropertyKey
                                      (
@@ -151,6 +152,52 @@ namespace DikekoStore.Platform.Service
             return db.Transaction(sb.ToString());
         }
 
+        /// <summary>
+        /// 按照CategoryId读取
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public IList<GoodsPropertyKey> GetByCategoryId(string categoryId)
+        {
+            var sql = $@"SELECT Id,
+                                              Name,
+                                              CategoryId,
+                                              IsUsed,
+                                              IsDelete,
+                                              CreateUserId,
+                                              CreateTime,
+                                              EditUserId,
+                                              EditTime FROM dbo.GoodsPropertyKey
+	                                          WHERE CategoryId=@CategoryId AND IsUsed=1 AND IsDelete=0";
+            SqlParameter[] para =
+            {
+                new SqlParameter("@CategoryId",categoryId)
+            };
+            return db.FetchOrDefault<GoodsPropertyKey>(sql, para);
+        }
 
+        /// <summary>
+        /// 按照PropertyKeyId读取
+        /// </summary>
+        /// <param name="propertyKeyId"></param>
+        /// <returns></returns>
+        public IList<Dikeko.ORM.Core.Model.GoodsPropertyVal> GetByPropertyKeyId(string propertyKeyId)
+        {
+            var sql = $@"SELECT Id,
+                                       Name,
+                                       PropertyKeyId,
+                                       IsUsed,
+                                       IsDelete,
+                                       CreateUserId,
+                                       CreateTime,
+                                       EditUserId,
+                                       EditTime FROM dbo.GoodsPropertyVal 
+	                             WHERE PropertyKeyId=@PropertyKeyId AND IsUsed=1 AND IsDelete=0";
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PropertyKeyId",propertyKeyId)
+            };
+            return db.FetchOrDefault<Dikeko.ORM.Core.Model.GoodsPropertyVal>(sql, para);
+        }
     }
 }
