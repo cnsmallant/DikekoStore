@@ -8,21 +8,21 @@ using System.Text;
 namespace DikekoStore.Platform.Interface
 {
     /// <summary>
-    /// 商品属性
+    /// 商品规格
     /// </summary>
-    public interface IGoodsProperty
+    public interface IGoodsSpecification
     {
         /// <summary>
         /// 添加
         /// </summary>
         /// <returns></returns>
-        int Add(GoodsProperty goodsProperty);
+        int Add(GoodsSpecification goodsSpecification);
 
         /// <summary>
         /// 修改
         /// </summary>
         /// <returns></returns>
-        int Edit(GoodsProperty goodsProperty);
+        int Edit(GoodsSpecification goodsSpecification);
 
         /// <summary>
         /// 删除
@@ -43,12 +43,12 @@ namespace DikekoStore.Platform.Interface
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>
-        IList<GoodsPropertyKey> GetByCategoryId(string categoryId);
+        IList<GoodsSpecificationKey> GetByCategoryId(string categoryId);
         /// <summary>
         /// 按照PropertyKeyId读取
         /// </summary>
         /// <param name="propertyKeyId"></param>
         /// <returns></returns>
-        IList<Dikeko.ORM.Core.Model.GoodsPropertyVal> GetByPropertyKeyId(string propertyKeyId);
+        IList<Dikeko.ORM.Core.Model.GoodsSpecificationVal> GetBSpecificationKeyId(string specificationKeyId);
     }
 }

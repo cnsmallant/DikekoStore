@@ -1186,6 +1186,61 @@ public  string  EditUserId{ get; set; }
 [Column("EditTime")]
 public  long  EditTime{ get; set; }
 }
+[TableName("GoodsSpecificationKey")]
+public class GoodsSpecificationKey
+{
+/// <summary>
+///主键
+ /// </summary>
+[Column("Id")]
+[PrimaryKey("Id",false)]
+public  string  Id{ get; set; }
+/// <summary>
+///名称
+ /// </summary>
+[Column("Name")]
+public  string  Name{ get; set; }
+/// <summary>
+///类别
+ /// </summary>
+[Column("CategoryId")]
+public  string  CategoryId{ get; set; }
+/// <summary>
+///IsDropdownBox
+ /// </summary>
+[Column("IsDropdownBox")]
+public  bool  IsDropdownBox{ get; set; }
+/// <summary>
+///是否启用
+ /// </summary>
+[Column("IsUsed")]
+public  bool  IsUsed{ get; set; }
+/// <summary>
+///是否删除
+ /// </summary>
+[Column("IsDelete")]
+public  bool  IsDelete{ get; set; }
+/// <summary>
+///创建人
+ /// </summary>
+[Column("CreateUserId")]
+public  string  CreateUserId{ get; set; }
+/// <summary>
+///创建时间（时间戳）
+ /// </summary>
+[Column("CreateTime")]
+public  long  CreateTime{ get; set; }
+/// <summary>
+///修改人
+ /// </summary>
+[Column("EditUserId")]
+public  string  EditUserId{ get; set; }
+/// <summary>
+///修改时间（时间戳）
+ /// </summary>
+[Column("EditTime")]
+public  long  EditTime{ get; set; }
+}
 [TableName("GoodsPropertyKey")]
 public class GoodsPropertyKey
 {
@@ -1255,56 +1310,6 @@ public  string  Name{ get; set; }
  /// </summary>
 [Column("PropertyKeyId")]
 public  string  PropertyKeyId{ get; set; }
-/// <summary>
-///是否启用
- /// </summary>
-[Column("IsUsed")]
-public  bool  IsUsed{ get; set; }
-/// <summary>
-///是否删除
- /// </summary>
-[Column("IsDelete")]
-public  bool  IsDelete{ get; set; }
-/// <summary>
-///创建人
- /// </summary>
-[Column("CreateUserId")]
-public  string  CreateUserId{ get; set; }
-/// <summary>
-///创建时间（时间戳）
- /// </summary>
-[Column("CreateTime")]
-public  long  CreateTime{ get; set; }
-/// <summary>
-///修改人
- /// </summary>
-[Column("EditUserId")]
-public  string  EditUserId{ get; set; }
-/// <summary>
-///修改时间（时间戳）
- /// </summary>
-[Column("EditTime")]
-public  long  EditTime{ get; set; }
-}
-[TableName("GoodsSpecificationKey")]
-public class GoodsSpecificationKey
-{
-/// <summary>
-///主键
- /// </summary>
-[Column("Id")]
-[PrimaryKey("Id",false)]
-public  string  Id{ get; set; }
-/// <summary>
-///名称
- /// </summary>
-[Column("Name")]
-public  string  Name{ get; set; }
-/// <summary>
-///类别
- /// </summary>
-[Column("CategoryId")]
-public  string  CategoryId{ get; set; }
 /// <summary>
 ///是否启用
  /// </summary>
