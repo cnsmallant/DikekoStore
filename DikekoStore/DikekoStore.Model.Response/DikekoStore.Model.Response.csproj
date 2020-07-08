@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Platform\" />
     <Folder Include="Client\" />
   </ItemGroup>
 

@@ -8,6 +8,7 @@
     <ProjectReference Include="..\DikekoStore.Dao\DikekoStore.Dao.csproj" />
     <ProjectReference Include="..\DikekoStore.Model.Common\DikekoStore.Model.Common.csproj" />
     <ProjectReference Include="..\DikekoStore.Model.Request\DikekoStore.Model.Request.csproj" />
+    <ProjectReference Include="..\DikekoStore.Model.Response\DikekoStore.Model.Response.csproj" />
   </ItemGroup>
 
 </Project>

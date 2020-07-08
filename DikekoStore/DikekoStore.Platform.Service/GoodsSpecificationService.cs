@@ -24,9 +24,8 @@ namespace DikekoStore.Platform.Service
         {
             StringBuilder sb = new StringBuilder();
             var SpecificationKeyId = Common.GenerateTools.PrimaryKey();
-            sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsSpecificationKey WHERE Name='{goodsSpecification.Name}' AND CategoryId='{goodsSpecification.CategoryId}' AND IsDelete=0)");
-            sb.Append("BEGIN");
-            sb.Append($@"INSERT dbo.GoodsSpecificationKey
+          
+            sb.Append($@" INSERT dbo.GoodsSpecificationKey
                                      (
                                          Id,
                                          Name,
@@ -55,8 +54,7 @@ namespace DikekoStore.Platform.Service
             {
                 foreach (var item in goodsSpecification.GoodsSpecificationVal)
                 {
-                    sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsSpecificationVal WHERE Name='{item.Name}' AND  SpecificationKeyId='{SpecificationKeyId}' AND               IsDelete=0 ) ");
-                    sb.Append("BEGIN");
+                
                     sb.Append($@"INSERT dbo.GoodsSpecificationVal
                                                        (
                                                            Id,
@@ -80,11 +78,11 @@ namespace DikekoStore.Platform.Service
                                                            N'{goodsSpecification.EditUserId}',  -- EditUserId - nvarchar(50)
                                                            {goodsSpecification.EditTime}     -- EditTime - bigint
                                                            );");
-                    sb.Append("END");
+                
                 }
 
             }
-            sb.Append("END");
+        
             return db.Transaction(sb.ToString());
         }
 
@@ -124,17 +122,17 @@ namespace DikekoStore.Platform.Service
         public int Edit(GoodsSpecification goodsSpecification)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsSpecificationKey WHERE Name='{goodsSpecification.Name}' AND  IsDelete=0)");
-            sb.Append(@"BEGIN");
+            StringBuilder sub = new StringBuilder();
+            List<string> specificationValId = new List<string>();
             sb.Append($@"UPDATE  dbo.GoodsSpecificationKey SET Name='{goodsSpecification.Name}' WHERE  Id='{goodsSpecification.Id}' ");
-            sb.Append("END");
             if (goodsSpecification.IsDropdownBox)
             {
+              
                 foreach (var item in goodsSpecification.GoodsSpecificationVal)
                 {
-                    sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsSpecificationVal WHERE Name='{item.Name}' AND  IsDelete=0 AND SpecificationKeyId='{item.SpecificationKeyId}' )");
-                    sb.Append("BEGIN");
-                    sb.Append($@"INSERT dbo.GoodsSpecificationVal
+                    if (string.IsNullOrEmpty(item.Id))
+                    {
+                        sub.Append($@"INSERT dbo.GoodsSpecificationVal
                                                        (
                                                            Id,
                                                            Name,
@@ -157,7 +155,17 @@ namespace DikekoStore.Platform.Service
                                                            N'{goodsSpecification.EditUserId}',  -- EditUserId - nvarchar(50)
                                                            {goodsSpecification.EditTime}     -- EditTime - bigint
                                                            );");
-                    sb.Append("END");
+
+                    }
+                    else
+                    {
+                        sub.Append($"UPDATE.GoodsSpecificationVal SET Name='{item.Name}' WHERE  Id='{item.Id}'");
+                        specificationValId.Add(item.Id);
+                    }
+                    if (specificationValId.Count > 0)
+                    {
+                        sb.Append($"UPDATE.GoodsSpecificationVal SET IsDelete=1 WHERE SpecificationKeyId='' AND Id NOT IN('{string.Join("','", specificationValId)}')");
+                    }
                 }
             }
             else

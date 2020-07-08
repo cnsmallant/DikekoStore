@@ -21,9 +21,8 @@ namespace DikekoStore.Platform.Service
         {
             StringBuilder sb = new StringBuilder();
             var PropertyKeyId = Common.GenerateTools.PrimaryKey();
-            sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsPropertyKey WHERE Name='{goodsProperty.Name}' AND CategoryId='{goodsProperty.CategoryId}' AND IsDelete=0)");
-            sb.Append("BEGIN");
-            sb.Append($@"INSERT dbo.GoodsPropertyKey
+
+            sb.Append($@" INSERT dbo.GoodsPropertyKey
                                      (
                                          Id,
                                          Name,
@@ -48,9 +47,8 @@ namespace DikekoStore.Platform.Service
                                          );");
             foreach (var item in goodsProperty.PropertyVal)
             {
-                sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsPropertyVal WHERE Name='{item.Name}' AND  PropertyKeyId='{PropertyKeyId}' AND               IsDelete=0 ) ");
-                sb.Append("BEGIN");
-                sb.Append($@"INSERT dbo.GoodsPropertyVal
+
+                sb.Append($@" INSERT dbo.GoodsPropertyVal
                                                        (
                                                            Id,
                                                            Name,
@@ -73,9 +71,9 @@ namespace DikekoStore.Platform.Service
                                                            N'{goodsProperty.EditUserId}',  -- EditUserId - nvarchar(50)
                                                            {goodsProperty.EditTime}     -- EditTime - bigint
                                                            );");
-                sb.Append("END");
+
             }
-            sb.Append("END");
+
             return db.Transaction(sb.ToString());
         }
 
@@ -115,15 +113,15 @@ namespace DikekoStore.Platform.Service
         public int Edit(GoodsProperty goodsProperty)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsPropertyKey WHERE Name='{goodsProperty.Name}' AND  IsDelete=0)");
-            sb.Append(@"BEGIN");
-            sb.Append($@"UPDATE  dbo.GoodsPropertyKey SET Name='{goodsProperty.Name}' WHERE  Id='{goodsProperty.Id}' ");
-            sb.Append("END");
+            StringBuilder sub = new StringBuilder();
+            List<string> propertyValId = new List<string>();
+            sb.Append($@" UPDATE  dbo.GoodsPropertyKey SET Name='{goodsProperty.Name}' WHERE  Id='{goodsProperty.Id}' ;");
+       
             foreach (var item in goodsProperty.PropertyVal)
             {
-                sb.Append($@"IF NOT EXISTS(SELECT Id FROM dbo.GoodsPropertyVal WHERE Name='{item.Name}' AND  IsDelete=0 AND PropertyKeyId='{item.PropertyKeyId}' )");
-                sb.Append("BEGIN");
-                sb.Append($@"INSERT dbo.GoodsPropertyVal
+                if (string.IsNullOrEmpty(item.Id))
+                {
+                    sub.Append($@" INSERT dbo.GoodsPropertyVal
                                                        (
                                                            Id,
                                                            Name,
@@ -146,9 +144,19 @@ namespace DikekoStore.Platform.Service
                                                            N'{goodsProperty.EditUserId}',  -- EditUserId - nvarchar(50)
                                                            {goodsProperty.EditTime}     -- EditTime - bigint
                                                            );");
-                sb.Append("END");
-            }
 
+                }
+                else
+                {
+                    sub.Append($" UPDATE dbo.GoodsPropertyVal SET Name='{item.Name}' WHERE Id='{item.Id}';");
+                    propertyValId.Add(item.Id);
+                }
+            }
+            if (propertyValId.Count > 0)
+            {
+                sb.Append($" UPDATE dbo.GoodsPropertyVal SET IsDelete=1 WHERE PropertyKeyId='' AND Id NOT IN('{string.Join("','", propertyValId)}');");
+            }
+            sb.Append(sub.ToString());
             return db.Transaction(sb.ToString());
         }
 
