@@ -84,6 +84,9 @@ namespace DikekoStore.Common
     public class Enumerate
     {
         #region 排序
+        /// <summary>
+        /// 排序
+        /// </summary>
         public enum SortEnum
         {
             /// <summary>
@@ -98,5 +101,34 @@ namespace DikekoStore.Common
             DESC
         }
         #endregion
+
+        #region 排序字段
+        /// <summary>
+        /// 排序字段
+        /// </summary>
+        public enum SortField
+        {
+            /// <summary>
+            /// 综合
+            /// </summary>
+            [Description("综合")]
+            Integration = 0,
+            /// <summary>
+            /// 新品
+            /// </summary>
+            [Description("新品")]
+            NTS = 1,
+            /// <summary>
+            /// 销量
+            /// </summary>
+            [Description("销量")]
+            Sales = 2,
+            /// <summary>
+            /// 价格
+            /// </summary>
+            [Description("价格")]
+            Price = 3,
         }
+        #endregion
+    }
 }

@@ -35,6 +35,6 @@ namespace DikekoStore.Platform.Interface
         /// <summary>
         /// 分页查询
         /// </summary>
-        List<Model.Response.Platform.GoodsPage> GetPage(Model.Common.Page page);
+        List<Model.Response.Platform.GoodsPage> GetPage(Model.Request.Platform.GoodsPage page);
     }
 }

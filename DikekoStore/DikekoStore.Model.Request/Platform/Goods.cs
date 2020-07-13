@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using static DikekoStore.Common.Enumerate;
 
 namespace DikekoStore.Model.Request.Platform
 {
@@ -188,4 +189,15 @@ namespace DikekoStore.Model.Request.Platform
         public long EditTime { get; set; }
     }
 
+    /// <summary>
+    /// 商品分页
+    /// </summary>
+    public class GoodsPage:Common.Page
+    {
+        /// <summary>
+        /// 排序字段
+        /// </summary>
+        public SortField SortField { get; set; }
+        
+    }
 }

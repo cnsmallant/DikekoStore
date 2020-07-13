@@ -19,7 +19,7 @@ namespace DikekoStore.Model.Common
         /// </summary>
         public int PageSize { get; set; }
         /// <summary>
-        /// 
+        /// 排序
         /// </summary>
         public SortEnum Sort { get; set; }
     }
