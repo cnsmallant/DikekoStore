@@ -130,5 +130,29 @@ namespace DikekoStore.Common
             Price = 3,
         }
         #endregion
+        #region 人民币单位
+
+        /// <summary>
+        /// 人民币单位
+        /// </summary>
+        public enum CNYEnum
+        {
+            /// <summary>
+            /// 元
+            /// </summary>
+            [Description("元")]
+            Yuan,
+            /// <summary>
+            /// 角
+            /// </summary>
+            [Description("角")]
+            Jiao,
+            /// <summary>
+            /// 分
+            /// </summary>
+            [Description("分")]
+            Fen,
+        } 
+        #endregion
     }
 }

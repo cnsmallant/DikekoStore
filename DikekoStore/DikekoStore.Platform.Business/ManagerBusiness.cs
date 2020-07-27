@@ -28,9 +28,9 @@ namespace DikekoStore.Platform.Business
                 PhoneNumber = managerAdd.PhoneNumber,
                 IsUsed = true,
                 IsDelete = false,
-                CreateUserId = string.Empty,
+                CreateUserId = "0",
                 CreateTime = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                EditUserId = string.Empty,
+                EditUserId = "0",
                 EditTime = DateTimeOffset.Now.ToUnixTimeMilliseconds()
             };
             var result = Context.ServiceContext.Current.ManagerService.Add(manager);
@@ -75,7 +75,7 @@ namespace DikekoStore.Platform.Business
                 Account = managerUpdate.Account,
                 Password = Common.EncryptTools.EncryptToSHA256(managerUpdate.Password),
                 PhoneNumber = managerUpdate.PhoneNumber,
-                EditUserId = string.Empty,
+                EditUserId ="0",
                 EditTime = DateTimeOffset.Now.ToUnixTimeMilliseconds()
             };
             var result = Context.ServiceContext.Current.ManagerService.Edit(manager);

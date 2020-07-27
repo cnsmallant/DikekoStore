@@ -61,12 +61,12 @@ namespace DikekoStore.Model.Request.Platform
         ///原价（以分为单位）
         /// </summary>
         [DataMember]
-        public long OriginalPrice { get; set; }
+        public decimal OriginalPrice { get; set; }
         /// <summary>
         ///售价（以分为单位）
         /// </summary>
         [DataMember]
-        public long Price { get; set; }
+        public decimal Price { get; set; }
         /// <summary>
         ///运费模版
         /// </summary>
@@ -158,6 +158,12 @@ namespace DikekoStore.Model.Request.Platform
         /// </summary>
         [DataMember]
         public int Stock { get; set; }
+
+        /// <summary>
+        /// 商品ID
+        /// </summary>
+        [DataMember]
+        public string  GoodsId { get; set; }
         /// <summary>
         ///SKU-Id组合（json格式）
         /// </summary>

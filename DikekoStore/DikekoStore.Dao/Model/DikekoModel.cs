@@ -1426,6 +1426,11 @@ public  int  Stock{ get; set; }
 [Column("SkuIdGroup")]
 public  string  SkuIdGroup{ get; set; }
 /// <summary>
+///GoodsId
+ /// </summary>
+[Column("GoodsId")]
+public  string  GoodsId{ get; set; }
+/// <summary>
 ///是否启用
  /// </summary>
 [Column("IsUsed")]
